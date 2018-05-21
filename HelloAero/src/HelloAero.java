@@ -26,7 +26,7 @@ public class HelloAero {
 	private static final String PROPERTY_PATH = "property_path";
 
 	public HelloAero() throws ParserConfigurationException, SAXException, IOException {		
-		System.out.println("Hello AeroSoft!");
+		System.out.println("Hello World, and Hello AeroSoft!");
 //		ImageIcon icon = createImageIcon("/images/aerosoftsys.gif", "company icon");
 //		JFrame frame new LogoFrame(icon);
 		
