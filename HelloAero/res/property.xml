@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<environments>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><environments>
     <environment>
         <envName>dev</envName>
         <tmRoot>C:/Program Files/Tomcat9.0_DEV</tmRoot>

@@ -2,6 +2,7 @@
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.io.IOException;
 import java.util.prefs.Preferences;
 
@@ -20,12 +21,16 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.xml.sax.SAXException;
 
+
  
 public class HelloAero {
 	static Icon logo;
 	private static final String PROPERTY_PATH = "property_path";
 
-	public HelloAero() throws ParserConfigurationException, SAXException, IOException {		
+	public HelloAero() throws ParserConfigurationException, SAXException, IOException, 
+		ClassNotFoundException, InstantiationException, IllegalAccessException, 
+		UnsupportedLookAndFeelException
+	{
 		System.out.println("Hello World, Hello AeroSoft!");
 //		ImageIcon icon = createImageIcon("/images/aerosoftsys.gif", "company icon");
 //		JFrame frame new LogoFrame(icon);
@@ -33,62 +38,58 @@ public class HelloAero {
 		JFrame frame = new JFrame("AeroSoftsys");
 		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 //		JFrame.setDefaultLookAndFeelDecorated(true);
+		UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");		
 		Preferences prefs = Preferences.userNodeForPackage(HelloAero.class);
-		String propertyPath = prefs.get(PROPERTY_PATH, "LOCATION");
-		if (!propertyPath.equals("LOCATION")) {
-			FileManager.readPropertyFile(propertyPath);
+//		prefs.put(PROPERTY_PATH, "LOCATION");
+		String path = prefs.get(PROPERTY_PATH, "LOCATION");
+		
+		// read property.xml if exists
+		if (!path.equals("LOCATION")) {
+			File file = new File(path);
+			if (file.isFile()) {
+				FileManager.readPropertyFile(path);
+			}			
 		}
-		System.out.println("propertyPath = " + propertyPath);	
+		System.out.println("propertyFilePath = " + path);	
 
-		try {
-			UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");			
-		    
-			JMenuBar menuBar = new JMenuBar();
-			JMenu fileMenu = new JMenu(" File ");
-			JMenuItem properyMenuItem = new JMenuItem("Open Property File");
-			properyMenuItem.addActionListener(new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent ae) {
-					String path = FileManager.chooseFile();
-					System.out.println("file path : " + path);					
-					//read and display property.xml
-					if (!path.equals(null)) {						
-						try {
-							FileManager.readPropertyFile(path);
-							FileManager.editPropertyFile(path);
-							prefs.put(PROPERTY_PATH, path);
-						} catch (ParserConfigurationException e) {
-							e.printStackTrace();
-						} catch (SAXException e) {							
-							e.printStackTrace();
-						} catch (IOException e) {							
-							e.printStackTrace();
-						}						
-					}
+		JMenuBar menuBar = new JMenuBar();
+		JMenu fileMenu = new JMenu(" File ");
+		JMenuItem properyMenuItem = new JMenuItem("Open Property File");
+		properyMenuItem.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent ae) {
+				String path = FileManager.chooseFile();
+				System.out.println("file path : " + path);					
+				//read and display property.xml
+				File file = new File(path);
+				if (file.isFile()) {						
+					try {
+						FileManager.readPropertyFile(path);
+						FileManager.editPropertyFile(path);
+						prefs.put(PROPERTY_PATH, path);
+					} catch (ParserConfigurationException e) {
+						e.printStackTrace();
+					} catch (SAXException e) {							
+						e.printStackTrace();
+					} catch (IOException e) {							
+						e.printStackTrace();
+					}						
 				}
-			});
-			
-			fileMenu.add(properyMenuItem);
-			menuBar.add(fileMenu);
-			frame.setJMenuBar(menuBar);
-			
-			JPanel panel = new JPanel();
-			JLabel welcomeLabel = new JLabel("Welcome to AeroSoftsys!");
-			panel.add(welcomeLabel);		
-			frame.add(panel);			
-			
-			frame.setSize(500, 400);
-			frame.setLocationRelativeTo(null);
-			frame.setVisible(true);		
-		} catch (ClassNotFoundException e) {			
-			e.printStackTrace();
-		} catch (InstantiationException e) {			
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {				
-			e.printStackTrace();
-		} catch (UnsupportedLookAndFeelException e) {				
-			e.printStackTrace();
-		}
+			}
+		});
+		
+		fileMenu.add(properyMenuItem);
+		menuBar.add(fileMenu);
+		frame.setJMenuBar(menuBar);
+		
+		JPanel panel = new JPanel();
+		JLabel welcomeLabel = new JLabel("Welcome to AeroSoftsys!");
+		panel.add(welcomeLabel);		
+		frame.add(panel);			
+		
+		frame.setSize(500, 400);
+		frame.setLocationRelativeTo(null);
+		frame.setVisible(true);
 	}
 	
 	protected ImageIcon createImageIcon(String path, String description) {
@@ -101,7 +102,9 @@ public class HelloAero {
 		}
 	}
 	
-	public static void main(String[] args) throws ParserConfigurationException, SAXException, IOException {
+	public static void main(String[] args) throws ParserConfigurationException, SAXException, 
+		IOException, ClassNotFoundException, InstantiationException, IllegalAccessException, 
+		UnsupportedLookAndFeelException {
 		// TODO Auto-generated method stub
 		new HelloAero();
 	}

@@ -43,7 +43,7 @@ public class FileManager {
 	static String[] userList = new String[3];
 	static String[] passwordList = new String[3];
 	
-	static JTextField envTextField = new JTextField();
+	static JTextField envTextField = new JTextField();	
 	static JTextField tmRootTextField = new JTextField();
 	static JTextField serviceNameTextField = new JTextField();
 	static JTextField appRootTextField = new JTextField();
@@ -165,6 +165,7 @@ public class FileManager {
 			
 			JLabel envLabel = new JLabel("envName");
 			envTextField.setText(envNameList[di]);
+			envTextField.setEnabled(false);
 			
 			JLabel tmRootLabel = new JLabel("Tomcat Root");
 			tmRootTextField.setText(tmRootList[di]);			
@@ -199,7 +200,9 @@ public class FileManager {
 					.addGroup(layout.createParallelGroup(GroupLayout.Alignment.CENTER)
 							.addGroup(layout.createSequentialGroup()
 									.addComponent(devButton)
+									.addGap(10)
 									.addComponent(prodButton)
+									.addGap(10)
 									.addComponent(trainButton))							
 							.addGroup(layout.createSequentialGroup()
 									.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
@@ -220,8 +223,10 @@ public class FileManager {
 											.addComponent(dbNameTextField)
 											.addComponent(userTextField)
 											.addComponent(passwordTextField)))
-							.addComponent(saveButton)
-							.addComponent(exitButton)
+							.addGroup(layout.createSequentialGroup()
+								.addComponent(saveButton)
+								.addGap(20)
+								.addComponent(exitButton))
 					)					
 			);
 			layout.setVerticalGroup(layout.createSequentialGroup()
@@ -253,8 +258,9 @@ public class FileManager {
 					.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
 							.addComponent(passwordLabel)
 							.addComponent(passwordTextField))
-					.addComponent(saveButton)
-					.addComponent(exitButton)
+					.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+							.addComponent(saveButton)							
+							.addComponent(exitButton))
 			);
 			
 			devButton.addActionListener(new ActionListener() {
