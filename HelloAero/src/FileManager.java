@@ -59,12 +59,12 @@ public class FileManager {
 		String path = null;
 		JFileChooser fc = new JFileChooser();
 //		FileNameExtensionFilter filter = new FileNameExtensionFilter("JPG & GIF Images", "jpg", "gif");
-//      fc.setFileFilter(null);
+//        fc.setFileFilter(null);
         int returnVal = fc.showOpenDialog(null);
         if(returnVal == JFileChooser.APPROVE_OPTION) {
         	File file = fc.getSelectedFile();
         	path = file.getPath();
-            System.out.println("You chose file: " + file.getName());
+//            System.out.println("You chose file: " + file.getName());
             System.out.println("file path : " + path);
         }
 		return path;
@@ -80,8 +80,24 @@ public class FileManager {
         if(returnVal == JFileChooser.APPROVE_OPTION) {
         	File file = fc.getSelectedFile();
         	path = file.getPath();
-            System.out.println("You chose directory: " + file.getName());
+//            System.out.println("You chose directory: " + file.getName());
             System.out.println("dir path : " + path);
+        }
+		return path;
+	}
+	
+	public static String chooseFileOrDir() {
+		String path = null;
+		JFileChooser fc = new JFileChooser();
+		fc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+//		FileNameExtensionFilter filter = new FileNameExtensionFilter("JPG & GIF Images", "jpg", "gif");
+//      fc.setFileFilter(null);
+        int returnVal = fc.showOpenDialog(null);
+        if(returnVal == JFileChooser.APPROVE_OPTION) {
+        	File file = fc.getSelectedFile();
+        	path = file.getPath();
+//            System.out.println("You chose directory: " + file.getName());
+            System.out.println("file or dir path : " + path + " selected");
         }
 		return path;
 	}
@@ -112,8 +128,8 @@ public class FileManager {
 			    userList[i] = eElement.getElementsByTagName("user").item(0).getTextContent().trim();
 			    passwordList[i] = eElement.getElementsByTagName("password").item(0).getTextContent().trim();
 			    
-			    System.out.println("envName = " + envNameList[i]);
-			    System.out.println("tmRoot = " + tmRootList[i]);
+//			    System.out.println("envName = " + envNameList[i]);
+//			    System.out.println("tmRoot = " + tmRootList[i]);
 			    
 			    updateData();
 			}
@@ -373,5 +389,32 @@ public class FileManager {
 		passwordTextField.setText(passwordList[ind]);
 	}
 
+	public static void deleteFiles(String delDir) {
+		// TODO Auto-generated method stub
+		File fileToDelete = new File(delDir);
+		if (fileToDelete.isFile()) {
+			fileToDelete.delete();
+			System.out.println("delete file : " + fileToDelete.getPath());
+		} else {
+			File[] children = fileToDelete.listFiles();
+			for (File child : children) {
+				deleteFile(child);
+			}			
+		}
+	}
+
+	public static void deleteFile(File file) {
+		// TODO Auto-generated method stub
+		if (file.isDirectory()) {
+			File[] children = file.listFiles();
+			for (File child : children) {
+				deleteFile(child);
+			}
+			file.delete();
+			System.out.println("delete dir : " + file.getPath());
+		}
+		file.delete();
+		System.out.println("delete file : " + file.getPath());
+	}
 }
 

@@ -58,8 +58,6 @@ public class Data {
 	}
 	public static void setPasswordList(String[] passwordList) {
 		Data.passwordList = passwordList;
-	}
-
-	
+	}	
 	
 }
