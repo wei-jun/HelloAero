@@ -2,6 +2,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipException;
 import java.util.zip.ZipInputStream;
@@ -35,6 +36,7 @@ public class ZipUtils {
 		System.out.println("zip " + srcDir + " starts..."); 
 		String sourceFile = srcDir;
 		File filesToZip = new File(sourceFile);
+		//SimpleDateFormate sf = new SimpleDateFormat(yyyy-mm-dd);
 		String outFile = destDir + "/" + filesToZip.getName() + ".zip";
         FileOutputStream fos = new FileOutputStream(outFile);
         ZipOutputStream zos = new ZipOutputStream(fos);
@@ -53,14 +55,16 @@ public class ZipUtils {
 //            return;
 //        }
         if (fileToZip.isDirectory()) {
-        	System.out.println("zip dir " + fileToZip.getName() + " starts...");
+        	System.out.println("zip dir " + fileToZip.toString() + "/");        	
+            ZipEntry zipEntry = new ZipEntry(fileName + "/");
+            zos.putNextEntry(zipEntry);
             File[] children = fileToZip.listFiles();
             for (File childFile : children) {            	
                 zipFile(childFile, fileName + "/" + childFile.getName(), zos);
             }
             return;
         }
-        System.out.println("zip file " + fileToZip.getPath() + " starts...");
+        System.out.println("zip file " + fileToZip.getPath());
         FileInputStream fis = new FileInputStream(fileToZip);
         ZipEntry zipEntry = new ZipEntry(fileName);
         zos.putNextEntry(zipEntry);
@@ -81,20 +85,21 @@ public class ZipUtils {
         	ZipInputStream zis = new ZipInputStream(new FileInputStream(fileZip));
             ZipEntry zipEntry = zis.getNextEntry();
             while(zipEntry != null){
-            	String fileName = zipEntry.getName();               
+            	String fileName = zipEntry.getName();
                 File newFile = new File(dir, fileName);
-                System.out.println("fileName = " + newFile.getPath());
-                
-                File newFileParent = newFile.getParentFile();
-                // create the parent directory structure if needed
-                newFileParent.mkdirs();
-
-                FileOutputStream fos = new FileOutputStream(newFile);
-                int len;
-                while ((len = zis.read(buffer)) > 0) {
-                    fos.write(buffer, 0, len);
+                if (zipEntry.isDirectory()) {
+                	// create directory structure if needed
+                	System.out.println("unzip dir " + newFile.getPath() + "/");
+                	newFile.mkdirs();
+                } else {
+                	System.out.println("unzip file " + newFile.getPath());
+                	FileOutputStream fos = new FileOutputStream(newFile);
+                    int len;
+                    while ((len = zis.read(buffer)) > 0) {
+                        fos.write(buffer, 0, len);
+                    }
+                    fos.close();
                 }
-                fos.close();
                 zipEntry = zis.getNextEntry();
             }
             zis.closeEntry();

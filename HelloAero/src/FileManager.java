@@ -391,6 +391,7 @@ public class FileManager {
 
 	public static void deleteFiles(String delDir) {
 		// TODO Auto-generated method stub
+		System.out.println("delete file : " + delDir + " start...");
 		File fileToDelete = new File(delDir);
 		if (fileToDelete.isFile()) {
 			fileToDelete.delete();
@@ -401,6 +402,7 @@ public class FileManager {
 				deleteFile(child);
 			}			
 		}
+		System.out.println("delete file : " + delDir + " ends");
 	}
 
 	public static void deleteFile(File file) {

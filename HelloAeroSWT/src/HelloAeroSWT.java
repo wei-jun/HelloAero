@@ -1,4 +1,6 @@
-/* 2018-05-19 */
+/* 2018-05-19 
+ * SWT: The Standard Widget Toolkit
+ * */
 
 
 import org.eclipse.swt.SWT;
